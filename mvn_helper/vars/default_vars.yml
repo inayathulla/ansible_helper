@@ -1,0 +1,2 @@
+dir_path: ~/bkp/konnect
+mvn_command: mvn clean
