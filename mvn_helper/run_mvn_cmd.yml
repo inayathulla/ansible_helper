@@ -15,7 +15,7 @@
       recurse: no
      register: output
 
-   - name: print all listed directories captured in output
+   - name: add directories captured in output to dirs
      no_log: true
      set_fact:
       dirs: "{{ dirs + [item.path] }}"
@@ -26,7 +26,7 @@
    - name: filter folders which does not have pom file
      no_log: true
      stat:
-      path: "{{ item  }}/pom.xml"
+      path: "{{ item }}/pom.xml"
      with_items: "{{ dirs }}"
      register: check_file_exists
 

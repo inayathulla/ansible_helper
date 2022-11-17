@@ -1,0 +1,27 @@
+---
+- name: iterates through subdirectories in non recursive manner and execute git command
+  hosts: localhost
+  vars_files:
+   - "./vars/default_vars.yml"
+  vars:
+    dirs: []
+
+  tasks:
+    - name: list all directories in mentioned parent directory
+      find:
+        path: "{{ dir_path  }}"
+        file_type: directory
+        recurse: no
+      register: output
+
+    - name: add directories captured in output to dirs
+      no_log: true
+      set_fact:
+        dirs: "{{ dirs + [item.path] }}"
+      with_items: "{{ output.files }}"
+
+    - name: execute git command
+      command:
+        chdir: "{{ item }}"
+        cmd: "{{ git_command }}"
+      with_items: "{{ dirs }}"
